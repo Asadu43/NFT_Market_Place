@@ -82,7 +82,7 @@ contract Market {
 
 		IERC721(listing.token).transferFrom(address(this), msg.sender, listing.tokenId);
 
-		// payable(listing.seller).transfer(listing.price);
+		(listing.seller).transfer(listing.price);
 
 		emit Sale(
 			listingId,
@@ -105,4 +105,16 @@ contract Market {
 
 		emit Cancel(listingId, listing.seller);
 	}
+
+    function resellToken(uint256 listingId, uint256 price) public payable {
+
+	  Listing storage listing = _listings[listingId];
+      require(listing.seller == msg.sender, "Only item owner can perform this operation");
+
+	  listing.status =ListingStatus.Active;
+	  listing.price = price;
+	  listing.seller = msg.sender;
+
+	  IERC721(listing.token).transferFrom(msg.sender, address(this), listing.tokenId);
+    }
 }

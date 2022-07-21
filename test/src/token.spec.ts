@@ -49,29 +49,24 @@ describe("Market Token", function () {
   })
 
   it("Seller cannot be buyer", async function () {
-    // console.log(await testTokenInstance.getListing(1));
     await expect(testTokenInstance.buyToken(1)).to.be.revertedWith("Seller cannot be buyer")
   })
 
   it("buyer Don't have Enough Ether", async function () {
-    // console.log(await testTokenInstance.getListing(1));
     await expect(testTokenInstance.connect(signers[1]).buyToken(1)).to.be.revertedWith("Insufficient payment")
   })
 
 
   it("buy Token", async function () {
-    // console.log(await testTokenInstance.getListing(1));
     await testTokenInstance.connect(signers[1]).buyToken(1,({value:parseEther("1")}))
   })
 
   it("Seller can Cancel List", async function () {
-    // console.log(await testTokenInstance.getListing(1));
     await expect(testTokenInstance.connect(signers[1]).cancel(1)).to.be.revertedWith("Only seller can cancel listing")
   })
 
 
   it("Seller can Cancel ", async function () {
-    // console.log(await testTokenInstance.getListing(1));
     await testTokenInstance.cancel(2)
   })
 
