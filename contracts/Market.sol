@@ -12,7 +12,7 @@ contract Market {
 
 	struct Listing {
 		ListingStatus status;
-		address seller;
+		address  seller;
 		address token;
 		uint tokenId;
 		uint price;
@@ -79,10 +79,12 @@ contract Market {
 		require(msg.value >= listing.price, "Insufficient payment");
 
 		listing.status = ListingStatus.Sold;
+		listing.seller = msg.sender;
 
 		IERC721(listing.token).transferFrom(address(this), msg.sender, listing.tokenId);
 
-		(listing.seller).transfer(listing.price);
+		payable(listing.seller).transfer(listing.price);
+
 
 		emit Sale(
 			listingId,

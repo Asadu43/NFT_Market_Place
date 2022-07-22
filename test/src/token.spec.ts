@@ -62,13 +62,23 @@ describe("Market Token", function () {
   })
 
   it("Seller can Cancel List", async function () {
-    await expect(testTokenInstance.connect(signers[1]).cancel(1)).to.be.revertedWith("Only seller can cancel listing")
+    await expect(testTokenInstance.connect(signers[1]).cancel(2)).to.be.revertedWith("Only seller can cancel listing")
   })
 
 
   it("Seller can Cancel ", async function () {
     await testTokenInstance.cancel(2)
   })
+
+  it("Only Owner Can Resell ", async function () {
+    await masterNFT.connect(signers[1]).setApprovalForAll(testTokenInstance.address,true);
+    
+    await expect( testTokenInstance.connect(signers[2]).resellToken(1,parseEther("1"))).to.be.revertedWith("Only item owner can perform this operation")
+
+   await testTokenInstance.connect(signers[1]).resellToken(1,parseEther("1"))
+  })
+
+
 
 
 
