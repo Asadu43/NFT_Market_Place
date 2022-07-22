@@ -38,9 +38,15 @@ describe("Market Token", function () {
     await masterNFT.safeMint();
   })
 
+  it("Create List With Non Contract Address", async function () {
+    await expect(testTokenInstance.listToken("0x0000000000000000000000000000000000000000",0,parseEther("1"))).to.be.revertedWith("function call to a non-contract account");
+  })
+
   it("Create List", async function () {
-    await testTokenInstance.listToken(masterNFT.address,0,parseEther("1"));
+    await expect( testTokenInstance.listToken(masterNFT.address,10,parseEther("1"))).to.be.revertedWith("ERC721: invalid token ID");
     await testTokenInstance.listToken(masterNFT.address,1,parseEther("1"));
+    await testTokenInstance.listToken(masterNFT.address,0,parseEther("1"));
+    await expect(testTokenInstance.listToken(masterNFT.address,1,parseEther("1"))).to.be.revertedWith("ERC721: transfer from incorrect owner");
   })
 
   it("Get List", async function () {
@@ -67,18 +73,21 @@ describe("Market Token", function () {
 
 
   it("Seller can Cancel ", async function () {
-    await testTokenInstance.cancel(2)
+    await testTokenInstance.connect(signers[0]).cancel(2)
   })
 
-  it("Only Owner Can Resell ", async function () {
-    await masterNFT.connect(signers[1]).setApprovalForAll(testTokenInstance.address,true);
+  // it("Only Owner Can Resell ", async function () {
+  //   await masterNFT.connect(signers[1]).setApprovalForAll(testTokenInstance.address,true);
     
-    await expect( testTokenInstance.connect(signers[2]).resellToken(1,parseEther("1"))).to.be.revertedWith("Only item owner can perform this operation")
+  //   await expect( testTokenInstance.connect(signers[2]).resellToken(1,parseEther("1"))).to.be.revertedWith("Only item owner can perform this operation")
 
-   await testTokenInstance.connect(signers[1]).resellToken(1,parseEther("1"))
-  })
+  //  await testTokenInstance.connect(signers[1]).resellToken(1,parseEther("1.5"))
+  // })
 
-
+  // it("Get List", async function () {
+  //   console.log(await testTokenInstance.getListing(1));
+  //   await testTokenInstance.getListing(1)
+  // })
 
 
 

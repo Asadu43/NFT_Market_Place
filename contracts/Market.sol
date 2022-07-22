@@ -79,7 +79,7 @@ contract Market {
 		require(msg.value >= listing.price, "Insufficient payment");
 
 		listing.status = ListingStatus.Sold;
-		listing.seller = msg.sender;
+		// listing.seller = msg.sender;
 
 		IERC721(listing.token).transferFrom(address(this), msg.sender, listing.tokenId);
 
@@ -108,15 +108,15 @@ contract Market {
 		emit Cancel(listingId, listing.seller);
 	}
 
-    function resellToken(uint256 listingId, uint256 price) public payable {
+    // function resellToken(uint256 listingId, uint256 price) public payable {
 
-	  Listing storage listing = _listings[listingId];
-      require(listing.seller == msg.sender, "Only item owner can perform this operation");
+	//   Listing storage listing = _listings[listingId];
+    //   require(listing.seller == msg.sender, "Only item owner can perform this operation");
 
-	  listing.status =ListingStatus.Active;
-	  listing.price = price;
-	  listing.seller = msg.sender;
+	//   listing.status =ListingStatus.Active;
+	//   listing.price = price;
+	//   listing.seller = msg.sender;
 
-	  IERC721(listing.token).transferFrom(msg.sender, address(this), listing.tokenId);
-    }
+	//   IERC721(listing.token).transferFrom(msg.sender, address(this), listing.tokenId);
+    // }
 }
