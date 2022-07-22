@@ -44,6 +44,7 @@ const sharedNetworkConfig: HttpNetworkUserConfig = {
   saveDeployments: true,
   timeout: 8000000,
   gasPrice: "auto",
+
 };
 if (process.env.PRIVATE_KEY) {
   sharedNetworkConfig.accounts = [process.env.PRIVATE_KEY];
@@ -69,15 +70,7 @@ const config: HardhatUserConfig = {
   },
   solidity: {
     compilers: [
-      {
-        version: "0.4.23",
-        settings: {
-          optimizer: {
-            runs: 200,
-            enabled: true
-          }
-        }
-      },
+
       {
         version: "0.8.4",
         settings: {
